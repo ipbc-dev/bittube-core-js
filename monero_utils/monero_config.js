@@ -1,10 +1,5 @@
-<<<<<<< HEAD
-// Copyright (c) 2014-2018, MyMonero.com
+// Copyright (c) 2014-2020, MyMonero.com
 // 
-=======
-// Copyright (c) 2014-2019, MyMonero.com
-//
->>>>>>> e23a3658d97e302e9c1c6f6be05e6b711b931ac2
 // All rights reserved.
 // 
 // Redistribution and use in source and binary forms, with or without modification, are
