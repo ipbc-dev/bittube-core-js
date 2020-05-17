@@ -1,6 +1,6 @@
 {
   "name": "mymonero-core-js",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "The JS library containing the Monero crypto plus lightweight wallet functions behind the official MyMonero apps",
   "main": "index.js",
   "repository": {
@@ -25,21 +25,31 @@
     "tool"
   ],
   "author": "MyMonero",
-  "license": "See LICENSE.TXT. Copyright (c) 2014-2018, MyMonero.com. All rights reserved.",
+  "license": "See LICENSE.TXT. Copyright (c) 2014-2019, MyMonero.com. All rights reserved.",
   "bugs": {
     "url": "https://github.com/mymonero/mymonero-core-js/issues"
   },
   "homepage": "https://github.com/mymonero/mymonero-core-js#readme",
   "dependencies": {},
   "devDependencies": {
-    "mocha": "^5.2.0"
+    "babel-core": "6.26.3",
+    "babel-loader": "8.0.2",
+    "babel-minify": "0.4.3",
+    "html5-fs": "0.1.1",
+    "mocha": "5.2.0",
+    "webpack": "4.19.1",
+    "webpack-cli": "3.1.0",
+    "webpack-merge": "4.1.4",
+    "lodash": ">=4.17.13"
   },
   "jest": {
     "testEnvironment": "node",
     "verbose": true,
     "coveragePathIgnorePatterns": [
       "node_modules",
-      "monero_utils/MyMoneroCoreCpp.js",
+      "monero_utils/MyMoneroCoreCpp_WASM.js",
+      "monero_utils/MyMoneroCoreCpp_ASMJS.js",
+      "monero_utils/MyMoneroCoreCpp_ASMJS.asm.js",
       "tests/emjs/*"
     ]
   }

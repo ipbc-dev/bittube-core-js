@@ -1,26 +1,21 @@
-<<<<<<< HEAD
-// Copyright (c) 2014-2018, MyMonero.com
-// 
-=======
 // Copyright (c) 2014-2019, MyMonero.com
 //
->>>>>>> e23a3658d97e302e9c1c6f6be05e6b711b931ac2
 // All rights reserved.
-// 
+//
 // Redistribution and use in source and binary forms, with or without modification, are
 // permitted provided that the following conditions are met:
-// 
+//
 // 1. Redistributions of source code must retain the above copyright notice, this list of
 //	conditions and the following disclaimer.
-// 
+//
 // 2. Redistributions in binary form must reproduce the above copyright notice, this list
 //	of conditions and the following disclaimer in the documentation and/or other
 //	materials provided with the distribution.
-// 
+//
 // 3. Neither the name of the copyright holder nor the names of its contributors may be
 //	used to endorse or promote products derived from this software without specific
 //	prior written permission.
-// 
+//
 // THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY
 // EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
 // MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL
@@ -30,48 +25,39 @@
 // INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
 // STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF
 // THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+// Original Author: Lucas Jones
+// Modified to remove jQuery dep and support modular inclusion of deps by Paul Shapiro (2016)
+// Modified to add RingCT support by luigi1111 (2017)
 //
-"use strict"
+// v--- These should maybe be injected into a context and supplied to currencyConfig for future platforms
+const MyMoneroBridge_utils = require('./MyMoneroBridge_utils')
 //
-const JSBigInt = require('../cryptonote_utils/biginteger').BigInteger
-//
-module.exports = 
+class MyMoneroBridgeClass_Base
 {
-	// Number of atomic units in one unit of currency. e.g. 12 => 10^12 = 1000000000000
-	coinUnitPlaces: 8,
-
-	// Minimum number of confirmations for a transaction to show as confirmed
-	txMinConfirms: 10,
-
-	// Currency symbol
-	coinSymbol: 'TUBE',
-
-	// OpenAlias prefix
-	openAliasPrefix: "tube",
-
-	// Currency name
-	coinName: 'BitTube',
-
-	// Payment URI Prefix
-	coinUriPrefix: 'bittube:',
-
-	// Prefix code for addresses
-	addressPrefix: 0xd1, // 18 => addresses start with "4"
-	integratedAddressPrefix: 0x404f,
-
-	// Network per kb fee in atomic units
-	feePerKB_JSBigInt: new JSBigInt('2000000000'), // 0.002
-	// Dust threshold in atomic units
-	// 2*10^9 used for choosing outputs/change - we decompose all the way down if the receiver wants now regardless of threshold
-	dustThreshold: new JSBigInt("2000000000"),
-
-	// Dust threshold in atomic units
-	// 10^10 used for choosing outputs/change - we decompose all the way down if the receiver wants now regardless of threshold
-	//dustThreshold: new JSBigInt('10000000000'),
-	
-	// Maximum block number, used for tx unlock time
-	maxBlockNumber: 500000000,
-
-	// Average block time in seconds, used for unlock time estimation
-	avgBlockTime: 60
+	constructor(this_Module)
+	{
+		this.Module = this_Module;
+	}
+	//
+	//
+	__new_cb_args_with(task_id, err_msg, res)
+	{
+		const args = 
+		{
+			task_id: task_id
+		};
+		if (typeof err_msg !== 'undefined' && err_msg) {
+			args.err_msg = err_msg; // errors must be sent back so that C++ can free heap vals container
+		} else {
+			args.res = res;
+		}
+		return args;
+	}
+	__new_task_id()
+	{
+		return Math.random().toString(36).substr(2, 9); // doesn't have to be super random
+	}
 }
+//
+module.exports = MyMoneroBridgeClass_Base

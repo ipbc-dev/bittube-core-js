@@ -1,26 +1,21 @@
-<<<<<<< HEAD
-// Copyright (c) 2014-2018, MyMonero.com
-// 
-=======
 // Copyright (c) 2014-2019, MyMonero.com
 //
->>>>>>> e23a3658d97e302e9c1c6f6be05e6b711b931ac2
 // All rights reserved.
-// 
+//
 // Redistribution and use in source and binary forms, with or without modification, are
 // permitted provided that the following conditions are met:
-// 
+//
 // 1. Redistributions of source code must retain the above copyright notice, this list of
 //	conditions and the following disclaimer.
-// 
+//
 // 2. Redistributions in binary form must reproduce the above copyright notice, this list
 //	of conditions and the following disclaimer in the documentation and/or other
 //	materials provided with the distribution.
-// 
+//
 // 3. Neither the name of the copyright holder nor the names of its contributors may be
 //	used to endorse or promote products derived from this software without specific
 //	prior written permission.
-// 
+//
 // THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY
 // EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
 // MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL
@@ -33,45 +28,17 @@
 //
 "use strict"
 //
-const JSBigInt = require('../cryptonote_utils/biginteger').BigInteger
+const merge = require('webpack-merge')
+const common = require('./webpack.config.browser.common.js')
 //
-module.exports = 
-{
-	// Number of atomic units in one unit of currency. e.g. 12 => 10^12 = 1000000000000
-	coinUnitPlaces: 8,
-
-	// Minimum number of confirmations for a transaction to show as confirmed
-	txMinConfirms: 10,
-
-	// Currency symbol
-	coinSymbol: 'TUBE',
-
-	// OpenAlias prefix
-	openAliasPrefix: "tube",
-
-	// Currency name
-	coinName: 'BitTube',
-
-	// Payment URI Prefix
-	coinUriPrefix: 'bittube:',
-
-	// Prefix code for addresses
-	addressPrefix: 0xd1, // 18 => addresses start with "4"
-	integratedAddressPrefix: 0x404f,
-
-	// Network per kb fee in atomic units
-	feePerKB_JSBigInt: new JSBigInt('2000000000'), // 0.002
-	// Dust threshold in atomic units
-	// 2*10^9 used for choosing outputs/change - we decompose all the way down if the receiver wants now regardless of threshold
-	dustThreshold: new JSBigInt("2000000000"),
-
-	// Dust threshold in atomic units
-	// 10^10 used for choosing outputs/change - we decompose all the way down if the receiver wants now regardless of threshold
-	//dustThreshold: new JSBigInt('10000000000'),
-	
-	// Maximum block number, used for tx unlock time
-	maxBlockNumber: 500000000,
-
-	// Average block time in seconds, used for unlock time estimation
-	avgBlockTime: 60
-}
+// const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
+//
+module.exports = merge(common, {
+	// plugins: [
+	// 	new UglifyJSPlugin({
+	// 		compress: {
+	// 			drop_console: true,
+	// 		}
+	// 	})
+	// ]
+})
