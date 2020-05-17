@@ -26,10 +26,90 @@
 // STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF
 // THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 //
-"use strict";
+"use strict"
 //
-const monero_config = require("./monero_config")
-const money_format_utils = require("../cryptonote_utils/money_format_utils")
-const instance = money_format_utils(monero_config)
+const path = require('path')
 //
-module.exports = instance;
+module.exports = 
+{
+	devtool: "source-map",
+	context: __dirname,
+	entry: "./index.js",
+	output: {
+		path: path.resolve(__dirname, "build"),
+		filename: "mymonero-core.js",
+        library: "mymonero_core_js",
+        libraryTarget: "umd"
+	},
+	cache: false,
+	resolve: {
+		alias: {
+			"fs": "html5-fs"
+		},
+		extensions: ['.js', '.jsx', '.wasm', '.css', '.json', 'otf', 'ttf', 'eot', 'svg'],
+		modules: [
+			'node_modules'
+		]
+	},
+	stats: {
+		colors: true
+	},
+	module: {
+		rules: [
+			{
+				test: /\.(otf|ttf|eot|svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
+				use: [
+					{ loader: 'file-loader' }
+				]
+			},
+			{
+				test: /\.css$/,
+				use: [
+					{ loader: 'style!css!postcss' }
+				]
+			},
+			{
+				test: /\.styl$/,
+				use: [
+					{ loader: 'style!css!postcss!stylus?paths=node_modules' }
+				]
+			},
+			{
+				test: /\.js$/,
+				exclude: {
+					test: [
+						path.join(__dirname, 'node_modules')
+					],
+					exclude: [
+						'monero_utils/MyMoneroCoreCpp_ASMJS.asm.js',
+						'monero_utils/MyMoneroCoreCpp_ASMJS.wasm'
+					]
+				},
+				use: [
+					{
+						loader: 'babel-loader',
+						options: {
+							cacheDirectory: false
+							// ,
+							// presets: [ "es2015" ],
+							// plugins: ["transform-runtime"]
+						}
+					}
+				]
+			}
+		]
+	},
+	externals: [
+		(function () {
+			var IGNORES = [
+				'electron'
+			];
+			return function (context, request, callback) {
+				if (IGNORES.indexOf(request) >= 0) {
+					return callback(null, "require('" + request + "')");
+				}
+				return callback();
+			};
+		})()
+	]
+}
